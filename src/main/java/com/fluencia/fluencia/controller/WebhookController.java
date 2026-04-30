@@ -1,6 +1,7 @@
 package com.fluencia.fluencia.controller;
 
 import com.fluencia.fluencia.service.AIService;
+import com.fluencia.fluencia.service.WhatsAppService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +17,21 @@ public class WebhookController {
 
     private static final Logger log = LoggerFactory.getLogger(WebhookController.class);
 
-    private final AIService service;
+    private final AIService aiService;
+    private final WhatsAppService whatsAppService;
 
-    public WebhookController(AIService service) {
-        this.service = service;
+    public WebhookController(AIService aiService, WhatsAppService whatsAppService) {
+        this.aiService = aiService;
+        this.whatsAppService = whatsAppService;
     }
 
     @PostMapping
     public ResponseEntity<Void> recebeMensagem(@RequestBody JsonNode json) {
         String mensagem = json.at("/data/message/conversation").asText();
-        String resposta = service.processaMensagem(mensagem);
-        log.info("resposta: {}", resposta);
+        String number = json.at("/data/key/remoteJid").asText();
+        String respostaIA = aiService.processaMensagem(mensagem);
+        whatsAppService.enviaMensagem(number, respostaIA);
+        log.info("resposta: {}", respostaIA);
         return ResponseEntity.ok().build();
     }
 }
