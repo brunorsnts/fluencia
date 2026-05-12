@@ -1,6 +1,7 @@
 package com.fluencia.fluencia.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,8 @@ public class Message {
     private Long id;
     private String sender;
     private String content;
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
 
