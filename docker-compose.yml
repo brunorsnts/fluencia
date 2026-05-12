@@ -72,10 +72,24 @@ services:
     expose:
       - "5432"
 
+  fluencia-postgres:
+    container_name: fluencia_postgres
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_DB=fluencia
+      - POSTGRES_USER=fluencia
+      - POSTGRES_PASSWORD=fluencia
+    ports:
+      - "5432:5432"
+    volumes:
+      - fluencia_postgres_data:/var/lib/postgresql/data
+
 volumes:
   evolution_instances:
   evolution_redis:
   postgres_data:
+  fluencia_postgres_data:
 
 
 networks:

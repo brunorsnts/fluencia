@@ -3,6 +3,7 @@ package com.fluencia.fluencia.service;
 import com.fluencia.fluencia.dto.ResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -13,12 +14,13 @@ public class WhatsAppService {
     private final Logger log = LoggerFactory.getLogger(WhatsAppService.class);
 
     private final RestClient client;
-    private String apiKey = System.getenv("EVOLUTION_API_KEY");
+    private final String apiKey;
 
-    public WhatsAppService(RestClient.Builder client) {
+    public WhatsAppService(RestClient.Builder client, @Value("${evolution.instance-name}") String instanceName, @Value("${AUTHENTICATION_API_KEY}") String apiKey) {
         this.client = client
-                .baseUrl("http://localhost:5050/message/sendText/fluencia")
+                .baseUrl("http://localhost:5050/message/sendText/" + instanceName)
                 .build();
+        this.apiKey = apiKey;
     }
 
     public void enviaMensagem(String number, String text) {
