@@ -35,3 +35,4 @@ build/
 ### Project ###
 CLAUDE.md
 .env
+application-local.properties

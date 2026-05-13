@@ -1,6 +1,6 @@
 package com.fluencia.fluencia.service;
 
-import com.fluencia.fluencia.dto.ResponseDTO;
+import com.fluencia.fluencia.dto.RequestDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,15 +16,18 @@ public class WhatsAppService {
     private final RestClient client;
     private final String apiKey;
 
-    public WhatsAppService(RestClient.Builder client, @Value("${evolution.instance-name}") String instanceName, @Value("${AUTHENTICATION_API_KEY}") String apiKey) {
+    public WhatsAppService(RestClient.Builder client,
+                           @Value("${evolution.instance-name}") String instanceName,
+                           @Value("${AUTHENTICATION_API_KEY}") String apiKey,
+                           @Value("${url.send-text}") String url) {
         this.client = client
-                .baseUrl("http://localhost:5050/message/sendText/" + instanceName)
+                .baseUrl(url + instanceName)
                 .build();
         this.apiKey = apiKey;
     }
 
     public void enviaMensagem(String number, String text) {
-        ResponseDTO dto = new ResponseDTO(number, text);
+        RequestDTO dto = new RequestDTO(number, text);
         client
                 .post()
                 .header("apiKey", apiKey)

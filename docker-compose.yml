@@ -77,9 +77,9 @@ services:
     image: postgres:15
     restart: always
     environment:
-      - POSTGRES_DB=fluencia
-      - POSTGRES_USER=fluencia
-      - POSTGRES_PASSWORD=fluencia
+      - POSTGRES_DB=${DB_FLUENCIA}
+      - POSTGRES_USER=${USER_DB_FLUENCIA}
+      - POSTGRES_PASSWORD=${PASSWORD_DB_FLUENCIA}
     ports:
       - "5432:5432"
     volumes:
